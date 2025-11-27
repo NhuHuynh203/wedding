@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Thiệp Mời Cưới</title>
+
+<style>
+  /* ====== FONT ====== */
+  @font-face {
+    font-family: 'Whisper';
+    src: url('fonts/Whisper-Regular.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Raleway';
+    src: url('fonts/Raleway-VariableFont_wght.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Dancing';
+    src: url('fonts/DancingScript-VariableFont_wght.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Cormorant';
+    src: url('fonts/CormorantGaramond-VariableFont_wght.ttf') format('truetype');
+  }
+  @font-face {
+    font-family: 'Nunito';
+    src: url('fonts/Nunito-VariableFont_wght.ttf') format('truetype');
+  }
+
+  .safe-area {
+    padding-top: env(safe-area-inset-top, 20px); /* khoảng cách trên tai thỏ hoặc status bar */
+    padding-left: env(safe-area-inset-left, 0px);
+    padding-right: env(safe-area-inset-right, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  /* ====== BODY & BACKGROUND ====== */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: url('https://images.unsplash.com/photo-1551907234-01f4189f1c2d?auto=format&fit=crop&w=1350&q=80') center/cover fixed;
+
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* ====== OVERLAY(scroll) ====== */
+  .overlay {
+    background: rgba(215, 190, 134);
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px 20px 20px 20px;
+    scroll-behavior: smooth;
+  }
+
+  /* ====== CARD ====== */
+  .card {
+    position: relative;
+    background:rgba(255, 253, 240);
+    border-radius: 20px;
+    width: 100%;
+    max-width: 430px;
+    min-width: 320px;
+    
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto 60px;
+    overflow: hidden;
+    padding-bottom: 20px;
+  }
+
+  .card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+  }
+
+  /* ================ SAVE THE DATE ANIMATION ========================= */
+  .photo-container {
+    position: relative;
+    display: inline-block; /* hoặc width: 100%; nếu muốn full */
+  }
+  .wedding-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .save-date {
+    position: absolute;
+    max-width: 90%;  /* không bị ép xuống hàng */
+    white-space: nowrap; /* ngăn chữ xuống hàng */
+    top: 15%;       /* căn giữa theo chiều dọc */
+    left: 85%;      /* căn giữa theo chiều ngang */
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;   /* hoặc màu khác tùy ảnh */
+    text-shadow: 0 0 10px rgba(0,0,0,0.7); /* làm chữ nổi bật trên ảnh */
+  }
+  .save-text, .save-date-text {
+    font-family: 'Dancing', cursive;
+    font-size: clamp(22px, 6vw, 26px);
+    margin: 0;
+    color: white;
+    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    opacity: 0;
+    transform: translateY(-30px); /* bắt đầu từ trên */
+    animation: slideDown 1s ease-out forwards;
+  }
+  .save-date-text {
+    animation-delay: 0.6s; /* trễ 0.5s sau chữ Save the Date */
+  }
+  @keyframes slideDown {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+ /* MOBILE*/
+  @media (max-width: 480px) {
+
+    .save-date {
+      top: 15%;              /* đặt thấp hơn, phù hợp ảnh dọc */
+      left: 80%;             /* đưa vào giữa */
+      transform: translate(-50%, -50%);
+      white-space: nowrap;   /* giữ 1 dòng */
+      max-width: 100%;
+      text-align: center;
+    }
+    .save-text, 
+    .save-date-text {
+      font-family: 'Dancing', cursive;
+      font-size: clamp(18px, 10vw, 18px); /* chữ lớn hơn trên mobile */
+    }
+
+  }
+/* ================================================================== */
+
+/* ====== NHÀ TRAI & NHÀ GÁI ====== */
+  .family {
+    display: flex;
+    justify-content: space-between; /* chia đều 2 phần tử */
+    font-family: 'Cormorant', sans-serif;
+    font-weight: bold;
+    color: black;
+    font-size: clamp(18px, 5vw, 18px); /* chữ tự co dãn theo màn hình */
+    margin-top: 10px; /* khoảng cách 2 bên */
+    margin-bottom: 6px;
+    gap: 100px;
+    animation: zoomIn 2s forwards;
+  }
+
+  .family div {
+    text-align: center; /* căn giữa nội dung từng div */
+    flex: auto; /* cho mỗi div chiếm đều 1 phần */
+  }
+  @keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* ================================================================== */
+
+/* ====== PHỤ HUYNH ====== */
+  .names {
+    display: flex;
+    justify-content: space-between; /* căn 2 bên */
+    width: 100%;
+    padding: 0 10px; /* tránh sát lề */
+    color: black;
+    font-size: clamp(11px, 4vw, 12px); /* chữ co dãn theo màn hình */
+  }
+  .name-left, .name-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: center; /* căn giữa từng dòng */
+    font-family: 'Cormorant', serif;
+    font-weight: 700;
+    animation: zoomIn 2s forwards;
+  }
+  .address {
+    font-family: 'Cormorant', serif;
+    font-size: clamp(14px, 3vw, 14px);
+    color:  black;
+    margin-top: 4px;
+  }
+  @keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+/* ================================================================== */
+
+/* ====== TÊN CẶP ĐÔI ====== */
+  .center-names-3rows {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* căn giữa toàn bộ */
+    width: 100%;
+    text-align: center;
+    margin: 10px 0 20px 0;
+    gap: 8px;
+  }
+
+  /* HÀNG CHÚ RỂ */
+  .groom-row {
+    display: flex;
+    justify-content: center; /* căn giữa */
+    gap: 20px;
+  }
+
+  .groom-name {
+    font-family: 'Whisper', cursive;
+    font-weight: bold;
+    font-size: clamp(50px, 8vw, 70px); /* chữ tự co vừa màn hình */
+    color: rgb(177, 32, 32);
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateX(-100%);
+    animation: groomNameIn 1s ease-out forwards;
+    animation-delay: 0.3s;
+    white-space: nowrap; /* không xuống dòng */
+  }
+
+  /* HÀNG & */
+  .and-row {
+    margin: 10px 0;
+  }
+
+  .and {
+    font-family: 'Whisper', cursive;
+    font-weight: bold;
+    font-size: clamp(20px, 10vw, 24px);
+    color: black;
+    opacity: 0;
+    transform: translateY(-50px);
+    animation: andIn 1s ease-out forwards;
+    animation-delay: 0.6s;
+    white-space: nowrap; /* không xuống dòng */
+  }
+
+  /* HÀNG CÔ DÂU */
+  .bride-row {
+    display: flex;
+    justify-content: center; /* căn giữa */
+    gap: 20px;
+  }
+
+  .bride-name {
+    font-family: 'Whisper', cursive;
+    font-weight: bold;
+    font-size: clamp(50px, 8vw, 70px);
+    color: rgb(177, 32, 32);
+    text-shadow: 2px 2px 6px rgba(0,0,0,0.15);
+    opacity: 0;
+    transform: translateX(100%);
+    animation: brideNameIn 1s ease-out forwards;
+    animation-delay: 0.9s;
+    white-space: nowrap; /* không xuống dòng */
+  }
+/* ===== KEYFRAMES ===== */
+  @keyframes groomImgIn { to { opacity: 1; transform: translateX(0); } }
+  @keyframes groomNameIn { to { opacity: 1; transform: translateX(0); } }
+  @keyframes andIn { to { opacity: 1; transform: translateY(0); } }
+  @keyframes brideNameIn { to { opacity: 1; transform: translateX(0); } }
+  @keyframes brideImgIn { to { opacity: 1; transform: translateX(0); } }
+/* ================================================================== */
+
+/* ====== THÔNG TIN TIỆC ====== */
+.date-columns {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(32px, 2vw, 40px);
+  color: black;
+  font-family: 'Dancing', cursive;
+  flex-wrap: wrap;
+  margin: 5px 0;
+}
+
+.date-column { 
+  text-align: center; 
+  margin: 5px 0; 
+  opacity: 0;                  /* bắt đầu ẩn */
+  transform: scale(0);          /* bắt đầu nhỏ */
+  animation: zoomIn 3s forwards;  /* hiệu ứng phóng to */
+}
+
+/* thanh ngang */
+.bar {
+  width: clamp(90px, 10vw, 80px);
+  height: 2px;
+  background-color: black;
+  margin: 4px auto;
+  opacity: 0;
+  transform: scaleX(0);
+  animation: barGrow 3s forwards;
+}
+
+/* giá trị */
+.value { 
+  font-size: clamp(24px, 2.5vw, 32px);
+  margin: 4px 0; 
+
+}
+/* giá trị ngày*/
+.day .value { 
+  font-size: clamp(60px, 6vw, 64px);
+  font-weight: bold; 
+  color: rgb(177, 32, 32);
+}
+
+/* mô tả */
+p {
+  margin: 6px 0;
+  font-family: 'Nunito', sans-serif;
+  font-size: clamp(14px, 2vw, 16px);
+  color: black;
+  font-size: 500;
+  animation: zoomIn 3s forwards;
+}
+
+.place-name1 {
+  font-size: clamp(40px, 5vw, 44px);
+  font-family: 'Cormorant', sans-serif;
+  font-weight: 1000;
+  color: rgb(177, 32, 32);
+  letter-spacing: 1px;
+  animation: zoomIn 3s forwards;
+}
+
+.place-name2 {
+  font-weight: bold;
+  animation: zoomIn 3s forwards;
+}
+
+/* ===== ANIMATION ===== */
+@keyframes zoomIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+@keyframes barGrow {
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+/* ================================================================== */
+  /* ====== MAP ====== */
+  .map {
+    margin: 20px 0 30px;
+  }
+  iframe {
+    width: 100%;
+    height: 300px;
+    border: none;
+    border-radius: 10px;
+  }
+    /* ====== ALBUM ẢNH CƯỚI ====== */
+  .photo-gallery {
+    width: 90%;
+    margin: 0 auto 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+
+  /* Hàng 2 ảnh (luôn chia 2 cột) */
+  .photo-row.two-columns {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .photo-row.two-columns img {
+    flex: 1;
+    width: 50%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    object-fit: cover;
+    height: auto;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  /* Hàng 1 ảnh (full chiều ngang) */
+  .photo-row.single {
+    display: flex;
+    justify-content: center;
+  }
+
+  .photo-row.single img {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    object-fit: cover;
+  }
+
+  /* Hiệu ứng hover */
+  .photo-row img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  }
+
+  /* Responsive tinh chỉnh nhỏ cho điện thoại */
+  @media (max-width: 480px) {
+    .photo-row.two-columns {
+      gap: 6px;
+    }
+    .photo-row.two-columns img {
+      border-radius: 8px;
+    }
+  }
+
+  .thank{
+    font-size: clamp(14px, 2vw, 16px);
+    padding-top: 40px;
+    animation: zoomIn 3s forwards;
+  }
+  /* ====== CALENDAR ====== */
+.calendar {
+  width: 80%;
+  margin: clamp(20px, 5vw, 30px) auto clamp(10px, 4vw, 20px) auto;
+  background: linear-gradient(135deg, #fffacd, #ffe4e1);
+  border-radius: 12px;
+  padding: clamp(15px, 4vw, 20px);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  color: rgb(177, 32, 32);
+  font-family: 'Dancing', cursive;
+  text-align: center;
+}
+
+/* Tiêu đề tháng */
+.calendar h3 {
+  font-size: clamp(18px, 4vw, 22px);
+}
+
+/* Lưới ngày */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: clamp(3px, 1vw, 5px);
+  text-align: center;
+}
+
+.calendar-grid div {
+  padding: clamp(6px, 1.5vw, 8px) 0;
+  border-radius: 6px;
+  position: relative;
+  text-align: center;
+}
+
+/* Ngày đặc biệt với trái tim */
+.calendar-grid div.heart::before {
+  content: "❤️";
+  color: rgba(255, 215, 0, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(28px, 8vw, 40px);
+  opacity: 0.2;
+  z-index: 0;
+  pointer-events: none;
+  animation: heartBlink 1s infinite alternate;
+}
+
+/* In đậm tiêu đề thứ */
+.calendar-grid div:nth-child(-n+7) {
+  font-weight: bold;
+}
+
+/* ===== KEYFRAMES ===== */
+@keyframes heartBlink {
+  0% { opacity: 0.2; }
+  50% { opacity: 0.6; }
+  100% { opacity: 0.2; }
+}
+
+/* ====== TIMELINE ====== */
+.timeline-title {
+    font-size: clamp(24px, 4vw, 32px);   /* tự co giãn */
+    font-family: 'Cormorant', sans-serif;
+    font-weight: bold;
+}
+
+.timeline-wrapper {
+  width: 90%;
+  max-width: 500px;
+  margin: 5px 10px;
+  position: relative;
+  height: clamp(80px, 15vw, 100px);  /* responsive */
+}
+
+/* Thanh ngang */
+.timeline-bar {
+  position: absolute;
+  top: 100%;  /* đặt theo % chiều cao */
+  left: 5%;
+  width: 90%;
+  height: clamp(4px, 0.8vw, 4px);  /* responsive */
+  background-color: rgb(177, 32, 32);
+  border-radius: 2px;
+}
+
+/* Events */
+.timeline-events {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.timeline-events .event {
+  text-align: center;
+}
+.timeline-events .event .time {
+  font-weight: bold;
+  color: rgb(177, 32, 32);
+  font-size: clamp(18px, 2vw, 20px);  /* responsive */
+}
+.timeline-events .event .desc {
+  color: rgb(177, 32, 32);
+  font-size: clamp(18px, 1.8vw, 20px);  /* responsive */
+}
+
+/* Icon cặp đôi */
+.moving-couple {
+  position: absolute;
+  top: 60%;  /* vị trí theo % */
+  left: 0;
+  width: clamp(30px, 12vw, 50px);  /* responsive */
+  transform: translateX(-50%);
+  pointer-events: none;
+  animation: moveRight 3s linear forwards;
+}
+.moving-couple img {
+  width: 100%;
+  height: auto;
+}
+/* ===== KEYFRAMES ===== */
+@keyframes moveRight {
+  from {
+    left: 10%;
+  }
+  to {
+    left: 90%;
+  }
+}
+/* ====== COUNTDOWN ====== */
+.countdown {
+  text-align: center;
+  font-family: 'Nunito', cursive;
+  color: rgb(177, 32, 32);
+  margin-bottom: 20px;
+}
+
+#countdown-timer {
+  display: flex;
+  justify-content: center;
+  gap: clamp(10px, 5vw, 20px); /* tự động co dãn */
+  margin-top: 10px;
+
+}
+
+#countdown-timer div {
+  background: linear-gradient(135deg, #fffacd, #ffe4e1);
+  border-radius: 10px;
+  padding: clamp(8px, 2vw, 15px); /* padding linh hoạt */
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  min-width: 40px; /* đảm bảo div không quá nhỏ */
+}
+
+#countdown-timer span {
+  display: block;
+  font-size: clamp(12px, 4vw, 13px); /* font linh hoạt */
+  font-weight: bold;
+  color: rgb(177, 32, 32);
+}
+
+#countdown-timer p {
+  margin: 0;
+  font-size: clamp(11px, 2vw, 12px); /* font linh hoạt */
+  font-family: 'Nunito', sans-serif;
+  color: rgb(177, 32, 32);
+}
+
+  /* ====== PHOTO SLIDER ====== */
+.photo-slider {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+}
+
+.slider-track {
+  display: flex;
+  width: max-content;
+  animation: none;
+}
+
+.slider-track img {
+  width: clamp(160px, 40vw, 300px);   /* tự co giãn */
+  height: clamp(200px, 45vw, 500px);  /* luôn đúng tỉ lệ */
+  margin: 0 clamp(3px, 1vw, 6px);     /* responsive gap */
+  border-radius: 6px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+  object-fit: cover;
+}
+
+.slider-track img:hover {
+  transform: scale(1.05);
+}
+
+@keyframes scrollSlider {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+  /* ====== NÚT NHẠC ====== */
+  #music-btn {
+    position: fixed;
+    top: 20px; right: 20px;
+    font-size: 30px;
+    color: #fff;
+    text-shadow: 0 0 6px #000;
+    cursor: pointer;
+    z-index: 999;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+  #music-btn:hover { transform: scale(1.2); }
+  #music-btn.paused { opacity: 0.6; }
+
+</style>
+</head>
+
+<body>
+  <div class="safe-area">
+    <div class="overlay" id="overlay">
+      <audio id="bg-music" loop preload="auto">
+        <source src="Cưới Chính.mp3" type="audio/mpeg">
+        Trình duyệt không hỗ trợ phát nhạc.
+      </audio>
+
+      <div id="music-btn" title="Bật/Tắt nhạc">🎵</div>
+
+      <div class="card">
+        <div class="photo-container">
+          <img src="_HDB2064.JPG" alt="Ảnh cưới" class="wedding-photo">
+          <div class="save-date">
+            <h1 class="save-text">Save the Date</h1>
+            <h2 class="save-date-text">31/01/2026</h2>
+          </div>
+        </div>
+
+
+        <div class="family"><div>Nhà Trai</div><div>Nhà Gái</div></div>
+
+        <div class="names">
+          <div class="name-left">
+            <br>
+            <span>Bà: ĐẶNG THỊ BÉ CHÍN</span>
+            <span class="address">Tỉnh Đồng Tháp</span>
+          </div>
+          <div class="name-right">
+            <span>Ông: LÊ THÀNH NHỊ</span>
+            <span>Bà: NGUYỄN THỊ LỆ HƯƠNG</span>
+            <span class="address">Tỉnh Khánh Hòa</span>
+          </div>
+        </div>
+
+        <div class="center-names-3rows">
+          <!-- Hàng 1: chú rể -->
+          <div class="row groom-row">
+          
+            <div class="groom-name">Duy Tân</div>
+          </div>
+
+          <!-- Hàng 2: dấu & -->
+          <div class="row and-row">
+            <div class="and">&</div>
+          </div>
+
+          <!-- Hàng 3: cô dâu -->
+          <div class="row bride-row">
+            <div class="bride-name">Lệ Hằng</div>
+            
+          </div>
+        </div>
+
+        <p>THÂN MỜI BẠN ĐẾN DỰ BUỔI TIỆC BÁO HỶ</p>
+        <p>VÀO LÚC 18H00, THỨ BẢY</p>
+
+        <div class="date-columns">
+          <div class="date-column"><div class="bar"></div><div class="value">Tháng 01</div><div class="bar"></div></div>
+          <div class="date-column day"><div class="value">31</div></div>
+          <div class="date-column"><div class="bar"></div><div class="value">Năm 2026</div><div class="bar"></div></div>
+        </div>
+
+        <p>(NHẰM NGÀY 13 THÁNG 12 NĂM ẤT TỴ)</p>
+        <p>TẠI TRUNG TÂM HỘI NGHỊ TIỆC CƯỚI</p>
+        <p class="place-name1">BÁCH VIỆT</p>
+        <p class="place-name2">SẢNH GREEN (LẦU 4)</p>
+        <p>90 MẠC ĐĨNH CHI, PHƯỜNG TÂN ĐỊNH, TPHCM</p>
+
+        <div class="map">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d582.6079257106792!2d106.69556024528129!3d10.788063957904972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f34e8598ab7%3A0x6eab948274b4cf43!2zTmjDoCBIw6BuZyBUaeG7h2MgQ8aw4bubaSBCw6FjaCBWaeG7h3Q!5e0!3m2!1svi!2s!4v1764240040052!5m2!1svi!2s"
+            loading="lazy" allowfullscreen></iframe>
+        </div>
+
+        <!-- ====== ALBUM ẢNH CƯỚI ====== -->
+        <div class="photo-gallery">
+          <div class="photo-row two-columns">
+            <img src="_HDB2205.JPG" alt="Ảnh cưới 1">
+            <img src="_HDB2836.JPG" alt="Ảnh cưới 2">
+          </div>
+          <div class="photo-row single">
+            <img src="_HDB2433.JPG" alt="Ảnh cưới 3">
+          </div>
+        </div>
+        <p class="timeline-title">Time Line</p>
+        <div class="timeline-wrapper" id="timeline">
+          <!-- Thanh ngang -->
+          <div class="timeline-bar"></div>
+
+          <!-- Events -->
+          <div class="timeline-events">
+            <div class="event start">
+              <div class="time">18:00</div>
+              <div class="desc">Đón khách</div>
+            </div>
+            <div class="event end">
+              <div class="time">19:00</div>
+              <div class="desc">Khai tiệc</div>
+            </div>
+          </div>
+
+          <!-- Icon cặp đôi -->
+          <div class="moving-couple" id="couple">
+            <img src="wedding-couple.png" alt="Cô dâu chú rể">
+          </div>
+        </div>
+        <div class="thank"> 
+          <p>SỰ HIỆN DIỆN CỦA QUÝ KHÁCH</p>
+          <p>LÀ LỜI CHÚC PHÚC Ý NGHĨA NHẤT</p>
+          <p>CHO GIA ĐÌNH CHÚNG TÔI</p>
+        </div>
+        
+                <!-- ====== LỊCH THÁNG 1/2026 ====== -->
+        <div class="calendar">
+          <h3>Tháng 01/2026</h3>
+          <div class="calendar-grid">
+            <div>CN</div><div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div>
+
+            <!-- 1 đến 31 tháng 1/2026, tính từ Thứ Năm ngày 1/1 -->
+            <div></div><div></div><div></div><div></div><div>1</div><div>2</div><div>3</div><div>4</div>
+            <div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div><div>11</div>
+            <div>12</div><div>13</div><div>14</div><div>15</div><div>16</div><div>17</div><div>18</div>
+            <div>19</div><div>20</div><div>21</div><div>22</div><div>23</div><div>24</div><div>25</div>
+            <div>26</div><div>27</div><div>28</div><div>29</div><div>30</div><div class="heart">31</div>
+          </div>
+        </div>
+        <!-- ====== COUNTDOWN ====== -->
+        <div class="countdown">
+          <h3>COUNTDOWN</h3>
+          <div id="countdown-timer">
+            <div><span id="days">00</span><p>Ngày</p></div>
+            <div><span id="hours">00</span><p>Giờ</p></div>
+            <div><span id="minutes">00</span><p>Phút</p></div>
+            <div><span id="seconds">00</span><p>Giây</p></div>
+          </div>
+        </div>
+
+        <!-- ====== PHOTO SLIDER ====== -->
+      <div class="photo-slider">
+        <div class="slider-track">
+          <img src="_HDB2326.JPG" alt="Ảnh cưới 4">
+          <img src="_HDB2813.JPG" alt="Ảnh cưới 5">
+          <img src="_HDB2599.JPG" alt="Ảnh cưới 6">
+          <img src="_HDB1929.JPG" alt="Ảnh cưới 7">
+          <img src="_HDB2669.JPG" alt="Ảnh cưới 8">
+          <img src="_HDB2522.JPG" alt="Ảnh cưới 9">
+          <img src="_HDB1961.JPG" alt="Ảnh cưới 10">
+          <img src="_HDB2638.JPG" alt="Ảnh cưới 11">
+          <img src="_HDB2382.JPG" alt="Ảnh cưới 12">
+          <img src="_HDB2220.JPG" alt="Ảnh cưới 13">
+          <img src="_HDB2326.JPG" alt="Ảnh cưới 4">
+          <img src="_HDB2813.JPG" alt="Ảnh cưới 5">
+          <img src="_HDB2599.JPG" alt="Ảnh cưới 6">
+          <img src="_HDB1929.JPG" alt="Ảnh cưới 7">
+          <img src="_HDB2669.JPG" alt="Ảnh cưới 8">
+          <img src="_HDB2522.JPG" alt="Ảnh cưới 9">
+          <img src="_HDB1961.JPG" alt="Ảnh cưới 10">
+          <img src="_HDB2638.JPG" alt="Ảnh cưới 11">
+          <img src="_HDB2382.JPG" alt="Ảnh cưới 12">
+          <img src="_HDB2220.JPG" alt="Ảnh cưới 13">
+        </div>
+      </div>
+
+      </div>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const overlay = document.getElementById('overlay');
+  const musicBtn = document.getElementById('music-btn');
+  const bgMusic = document.getElementById('bg-music');
+  const couple = document.getElementById('couple');
+  const timeline = document.getElementById('timeline');
+  let scrollSpeed = 1.2, userScrolling = false, scrollTimeout;
+
+  // ===== SCROLL HANDLER =====
+  const handleUserScroll = () => {
+    userScrolling = true;
+    clearTimeout(scrollTimeout);
+    scrollTimeout = setTimeout(() => userScrolling = false, 2000);
+  };
+  overlay.addEventListener('wheel', handleUserScroll);
+  overlay.addEventListener('touchstart', handleUserScroll);
+  overlay.addEventListener('touchend', handleUserScroll);
+
+  const autoScroll = () => {
+    const maxScroll = overlay.scrollHeight - overlay.clientHeight;
+    if (!userScrolling && overlay.scrollTop < maxScroll)
+      overlay.scrollTop += scrollSpeed;
+    requestAnimationFrame(autoScroll);
+  };
+  requestAnimationFrame(autoScroll);
+
+  // ===== MUSIC =====
+  const playMusic = () => bgMusic.play().then(() => musicBtn.classList.remove('paused')).catch(()=>{});
+  musicBtn.addEventListener('click', () => {
+    if(bgMusic.paused) playMusic();
+    else { bgMusic.pause(); musicBtn.classList.add('paused'); }
+  });
+  document.body.addEventListener('touchstart', ()=>{ if(bgMusic.paused) playMusic(); }, { once: true });
+  window.addEventListener('load', ()=>{ if(bgMusic.paused) musicBtn.classList.add('paused'); });
+
+  // ===== COUPLE ANIMATION (1 lần) =====
+  let coupleStarted = false;
+  const checkTimelineVisible = () => {
+    const rect = timeline.getBoundingClientRect();
+    return rect.top < window.innerHeight && rect.bottom > 0;
+  };
+  const startCoupleAnimation = () => {
+    const events = timeline.querySelectorAll('.event');
+    const timelineRect = timeline.getBoundingClientRect();
+    const eventPositions = Array.from(events).map(e => {
+      const rect = e.getBoundingClientRect();
+      return rect.left - timelineRect.left + e.offsetWidth / 2;
+    });
+    let couplePos = eventPositions[0];
+    const targetPos = () => {
+      const overlayScroll = overlay.scrollTop;
+      const maxScroll = overlay.scrollHeight - overlay.clientHeight;
+      const scrollRatio = Math.min(overlayScroll / maxScroll, 1);
+      return eventPositions[0] + (eventPositions[eventPositions.length - 1] - eventPositions[0]) * scrollRatio;
+    };
+    const animateCouple = () => {
+      const newPos = targetPos();
+      couplePos += (newPos - couplePos) * 0.01;
+      couple.style.left = couplePos + 'px';
+      requestAnimationFrame(animateCouple);
+    };
+    requestAnimationFrame(animateCouple);
+  };
+  overlay.addEventListener('scroll', () => {
+    if (!coupleStarted && checkTimelineVisible()) {
+      coupleStarted = true;
+      startCoupleAnimation();
+    }
+  });
+
+  // ===== SAVE THE DATE, NAMES & DATE COLUMNS (reset animation khi cuộn tới) =====
+  const animatedElements = document.querySelectorAll('.family, .name-left, .name-right, .save-date-text, .save-text, .groom-name, .bride-name, .and, .value, .day, .bar, .p, .place-name1, .place-name2, .calendar-grid div.heart, .moving-couple, .timeline-title, .thank');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const el = entry.target;
+      if(entry.isIntersecting){
+        el.style.animation = 'none';
+        void el.offsetWidth; // force reflow
+        el.style.animation = ''; // chạy lại animation
+      }
+    });
+  }, { threshold: 0.1, root: overlay });
+  animatedElements.forEach(el => observer.observe(el));
+
+  // ===== COUNTDOWN =====
+  const countdownDate = new Date("Jan 31, 2026 18:00:00").getTime();
+  const daysEl = document.getElementById("days");
+  const hoursEl = document.getElementById("hours");
+  const minutesEl = document.getElementById("minutes");
+  const secondsEl = document.getElementById("seconds");
+
+  const updateCountdown = () => {
+    const now = new Date().getTime();
+    const distance = countdownDate - now;
+    if (distance <= 0) {
+      document.getElementById("countdown-timer").innerHTML = "<p>Hôm nay là ngày trọng đại! 💖</p>";
+      return;
+    }
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    daysEl.textContent = days.toString().padStart(2, "0");
+    hoursEl.textContent = hours.toString().padStart(2, "0");
+    minutesEl.textContent = minutes.toString().padStart(2, "0");
+    secondsEl.textContent = seconds.toString().padStart(2, "0");
+  };
+  setInterval(updateCountdown, 1000);
+  updateCountdown();
+
+  // ===== SLIDER AUTO START (chạy liên tục) =====
+  const calendar = document.querySelector('.calendar');
+  const sliderTrack = document.querySelector('.slider-track');
+  let sliderStarted = false;
+  const startSlider = () => {
+    sliderTrack.style.animation = "scrollSlider 40s linear infinite";
+  };
+  overlay.addEventListener('scroll', () => {
+    if (!sliderStarted && calendar.getBoundingClientRect().top < window.innerHeight) {
+      sliderStarted = true;
+      startSlider();
+    }
+  });
+
+})();
+</script>
+
+
+</body>
+</html>
